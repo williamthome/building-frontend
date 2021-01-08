@@ -33,10 +33,10 @@ const init = async (): Promise<App> => {
           accessToken
         }
       },
-      onSuccess: async (userResponse) => {
+      onSuccess: (userResponse) => {
         user.set(userResponse)
       },
-      onError: async () => {
+      onError: () => {
         deleteCookie('accessToken')
       }
     })
