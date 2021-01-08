@@ -12,12 +12,12 @@ const init = async (): Promise<App> => {
     await registerServiceWorker()
   } else {
     if (window.caches) {
-      console.log('[PURGE CACHES]', 'Running...')
       const keys = await window.caches.keys()
-      for (const key of keys) {
-        await window.caches.delete(key)
+      if (keys.length > 0) {
+        console.log('[PURGE CACHES]', 'Running...')
+        for (const key of keys) await window.caches.delete(key)
+        console.log('[PURGE CACHES]', 'Ok')
       }
-      console.log('[PURGE CACHES]', 'Ok')
     }
   }
 
