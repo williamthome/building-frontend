@@ -1,3 +1,5 @@
+import type { Company, CompanyRole, UserFeatures } from "./company";
+
 export interface Authentication {
   email: string
   password: string
@@ -12,8 +14,15 @@ export interface Registration {
 export interface User {
   id: string
   email: string
-  name: string
-  accessToken: string
-  activeCompanyId: string
   verified: boolean
+  name?: string
+  accessToken?: string
+  activeCompanyId?: string
+  rights?: UserRights[]
+}
+
+export interface UserRights {
+  company: Company
+  role: CompanyRole
+  features: UserFeatures
 }
