@@ -1,0 +1,6 @@
+/coverage/
+/public/
+**/node_modules/
+package-lock.json
+debug.log
+.eslintcache

@@ -1,0 +1,92 @@
+{
+  "private": true,
+  "scripts": {
+    "webpack-ts": "cross-env TS_NODE_PROJECT=%npm_package_config_TS_NODE_PROJECT%",
+    "build": "rimraf public && npm run webpack-ts NODE_ENV=production webpack",
+    "dev": "rimraf public && npm run webpack-ts NODE_ENV=development webpack serve --config webpack.config.ts --progress --profile --watch",
+    "debug": "rimraf public && npm run webpack-ts NODE_ENV=debug webpack serve --config webpack.config.ts --progress --profile --watch",
+    "start": "SET NODE_ENV=production && serve public -l 8080",
+    "serve": "rimraf public && npm run webpack-ts NODE_ENV=production webpack serve --config webpack.config.ts --progress --profile --watch",
+    "validate": "svelte-check",
+    "update:packages": "npx npm-check-updates -u && npm install",
+    "prettify": "npx prettier --write ./**/*.{ts,svelte}"
+  },
+  "config": {
+    "TS_NODE_PROJECT": "\"tools/webpack/tsconfig-for-webpack-config.json\""
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/plugin-transform-runtime": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
+    "@babel/runtime": "^7.12.5",
+    "@tsconfig/svelte": "^1.0.10",
+    "@types/compression-webpack-plugin": "^6.0.2",
+    "@types/copy-webpack-plugin": "^6.4.0",
+    "@types/mini-css-extract-plugin": "^1.2.2",
+    "@types/node": "^14.14.20",
+    "@types/script-ext-html-webpack-plugin": "^2.1.1",
+    "@types/terser-webpack-plugin": "^5.0.2",
+    "@types/webpack": "^4.41.25",
+    "@types/webpack-bundle-analyzer": "^3.9.0",
+    "@types/webpack-dev-server": "^3.11.1",
+    "@typescript-eslint/eslint-plugin": "^4.12.0",
+    "@typescript-eslint/parser": "^4.12.0",
+    "@webpack-cli/serve": "^1.2.1",
+    "autoprefixer": "^9.8.6",
+    "babel-loader": "^8.2.2",
+    "clean-webpack-plugin": "^3.0.0",
+    "compression-webpack-plugin": "^7.1.1",
+    "copy-webpack-plugin": "^7.0.0",
+    "cross-env": "^7.0.3",
+    "css-loader": "^5.0.1",
+    "ejs-webpack-loader": "^2.2.2",
+    "eslint": "^7.17.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "file-loader": "^6.2.0",
+    "git-commit-msg-linter": "^3.0.0",
+    "html-webpack-plugin": "^5.0.0-beta.4",
+    "html-webpack-tags-plugin": "^2.0.17",
+    "husky": "^4.3.7",
+    "image-webpack-loader": "^7.0.1",
+    "inspectpack": "^4.5.2",
+    "lint-staged": "^10.5.3",
+    "mini-css-extract-plugin": "^1.3.3",
+    "postcss-loader": "^4.1.0",
+    "prettier": "^2.2.1",
+    "prettier-plugin-svelte": "^1.4.2",
+    "rimraf": "^3.0.2",
+    "sass": "^1.32.0",
+    "sass-loader": "^10.1.0",
+    "script-ext-html-webpack-plugin": "^2.1.5",
+    "style-loader": "^2.0.0",
+    "svelte": "^3.31.2",
+    "svelte-check": "^1.1.24",
+    "svelte-loader": "^2.13.6",
+    "svelte-preprocess": "^4.6.1",
+    "terser-webpack-plugin": "^5.0.3",
+    "ts-loader": "^8.0.13",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.1.3",
+    "webpack": "^5.11.1",
+    "webpack-bundle-analyzer": "^4.3.0",
+    "webpack-cli": "^4.3.1",
+    "webpack-dev-server": "^3.11.1",
+    "zlib": "^1.0.5"
+  },
+  "dependencies": {
+    "serve": "^11.3.2"
+  },
+  "browserslist": [
+    "defaults"
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,svelte}": [
+      "npx prettier --write"
+    ]
+  }
+}
