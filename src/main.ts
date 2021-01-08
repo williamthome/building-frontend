@@ -1,4 +1,3 @@
-import api from './api'
 import { user, loading } from './store'
 import { getCookie, deleteCookie } from './helpers'
 import type { User } from './models'
@@ -24,6 +23,8 @@ const init = async (): Promise<App> => {
   const accessToken = getCookie('accessToken')
 
   if (accessToken) {
+    const api = (await import(/* webpackChunkName: "api" */ './api')).default
+
     await api.fetch<string, User>({
       requestOpts: {
         method: 'GET',

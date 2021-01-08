@@ -1,6 +1,5 @@
 <script lang="ts">
   import { beforeUpdate } from 'svelte'
-  import api from '../api'
   import { user, loggedIn, currentPath, loading } from '../store'
   import { routes } from '../config'
   import type { Registration, User } from '../models'
@@ -15,6 +14,8 @@
 
     const form = event.target
     const dto = formDataToJSON<Registration>(form)
+
+    const api = (await import(/* webpackChunkName: "api" */ '../api')).default
 
     await api.fetch<Registration, { user: User; verificationToken: string }>({
       requestOpts: {
