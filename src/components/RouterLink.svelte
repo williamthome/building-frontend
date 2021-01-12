@@ -1,17 +1,44 @@
 <script lang="ts">
-  import { currentPath /* , loggedIn */ } from '../store'
-  import { routes } from '../config'
+  import { currentPath } from '../store'
   import type { RoutePath } from '../config'
-  // import { isRouteProtected } from '../helpers'
-  import { NavItem } from '.'
+  import type { HttpParameters, HttpQuery } from '../protocols'
+  import { formatUri, navigateTo } from '../helpers'
 
-  export let pagePath: RoutePath
+  export let to: RoutePath | undefined = undefined
+  export let label: string
+  export let beforeNavigate: (() => any) | undefined = undefined
+  export let afterNavigate: (() => any) | undefined = undefined
+  export let onClick: (() => any) | undefined = undefined
+  export let params: HttpParameters | undefined = undefined
+  export let query: HttpQuery | undefined = undefined
 
-  function redirectTo() {
-    if ($currentPath === pagePath) return
-    // if (isRouteProtected(pagePath, $loggedIn)) return
-    $currentPath = pagePath
+  $: uri = formatUri({ uri: to, params, query })
+
+  async function action() {
+    if (to) {
+      if ($currentPath === to) return
+      if (beforeNavigate) await beforeNavigate()
+      navigateTo(to)
+      if (afterNavigate) await afterNavigate()
+    }
+    if (onClick) await onClick()
   }
 </script>
 
-<NavItem href="{pagePath}" label="{routes[pagePath].name}" action="{redirectTo}" />
+<a
+  href="{uri ?? 'javascript:void(0)'}"
+  class:current="{to && $currentPath === to}"
+  on:click|preventDefault="{action}"
+>{label}</a>
+
+<style lang="scss">
+  a {
+    text-transform: uppercase;
+    text-decoration: underline;
+    padding: 1rem;
+
+    &.current {
+      color: red;
+    }
+  }
+</style>

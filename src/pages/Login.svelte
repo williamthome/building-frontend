@@ -1,13 +1,9 @@
 <script lang="ts">
-  import { beforeUpdate } from 'svelte'
-  import { user, loggedIn, currentPath, loading } from '../store'
+  import { onMount } from 'svelte'
+  import { user, loading } from '../store'
   import { routes } from '../config'
   import type { Authentication, User } from '../models'
-  import { formDataToJSON, setCookie, getLocalStorage, setLocalStorage } from '../helpers'
-
-  beforeUpdate(() => {
-    if ($loggedIn) return ($currentPath = '/profile')
-  })
+  import { formDataToJSON, setCookie, getLocalStorage, setLocalStorage, navigateTo } from '../helpers'
 
   async function login(event: Event) {
     $loading = true
@@ -35,8 +31,11 @@
         setLocalStorage('lastLoggedMail', userResponse.email)
 
         $user = userResponse
-        routes['/login'].locked = true
-        $currentPath = '/profile'
+        if ($user.activeCompanyId) {
+          navigateTo('/company/:id', {
+            id: $user.activeCompanyId
+          })
+        } else navigateTo('/profile')
       },
       onError: ({ error }) => {
         console.error(error)

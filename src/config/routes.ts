@@ -1,36 +1,124 @@
+import { get } from 'svelte/store'
+import { getCookie } from '../helpers'
 import type { RouteConfig } from '../protocols'
+import { user } from '../store'
 
-export const routePaths = ['/', '/register', '/login', '/profile', '/404'] as const
+export const routePaths = [
+  '/',
+  '/register',
+  '/login',
+  '/profile',
+  '/company/:id',
+  '/company',
+  '/404'
+] as const
 
 export type RoutePath = typeof routePaths[number]
 
 export const routes: RouteConfig<RoutePath> = {
   '/': {
-    name: 'Home',
     component: async () =>
-      (await import(/* webpackChunkName: "home" */ '../pages/Home.svelte')).default
+      (
+        await import(
+          /* webpackPrefetch: true */ /* webpackChunkName: "home" */ '../pages/Home.svelte'
+        )
+      ).default
   },
   '/register': {
-    name: 'Register',
+    validations: [
+      {
+        valid: () => !getCookie('accessToken') || !get(user),
+        ifInvalid: {
+          redirectTo: '/profile'
+        }
+      }
+    ],
     component: async () =>
-      (await import(/* webpackChunkName: "register" */ '../pages/Register.svelte')).default
-    // guard: 'unauth'
+      (
+        await import(
+          /* webpackPrefetch: true */ /* webpackChunkName: "register" */ '../pages/Register.svelte'
+        )
+      ).default
   },
   '/login': {
-    name: 'Login',
+    validations: [
+      {
+        valid: () => !getCookie('accessToken') || !get(user),
+        ifInvalid: {
+          redirectTo: '/profile'
+        }
+      }
+    ],
     component: async () =>
-      (await import(/* webpackChunkName: "login" */ '../pages/Login.svelte')).default
-    // guard: 'unauth'
+      (
+        await import(
+          /* webpackPrefetch: true */ /* webpackChunkName: "login" */ '../pages/Login.svelte'
+        )
+      ).default
   },
   '/profile': {
-    name: 'Profile',
+    validations: [
+      {
+        valid: () => !!getCookie('accessToken') && !!get(user),
+        ifInvalid: {
+          redirectTo: '/login',
+          do: () => user.set(undefined)
+        }
+      }
+    ],
     component: async () =>
-      (await import(/* webpackChunkName: "profile" */ '../pages/Profile.svelte')).default
-    // guard: 'auth'
+      (
+        await import(
+          /* webpackPrefetch: true */ /* webpackChunkName: "profile" */ '../pages/Profile.svelte'
+        )
+      ).default
+  },
+  '/company/:id': {
+    validations: [
+      {
+        valid: () => !!getCookie('accessToken') && !!get(user),
+        ifInvalid: {
+          redirectTo: '/login',
+          do: () => user.set(undefined)
+        }
+      },
+      {
+        valid: () => !!get(user).activeCompanyId,
+        ifInvalid: {
+          redirectTo: '/profile'
+        }
+      }
+    ],
+    component: async () =>
+      (
+        await import(
+          /* webpackPrefetch: true */ /* webpackChunkName: "company-view" */ '../pages/Company.svelte'
+        )
+      ).default
+  },
+  '/company': {
+    validations: [
+      {
+        valid: () => !!getCookie('accessToken') && !!get(user),
+        ifInvalid: {
+          redirectTo: '/login',
+          do: () => user.set(undefined)
+        }
+      }
+    ],
+    component: async () =>
+      (
+        await import(
+          /* webpackPrefetch: true */ /* webpackChunkName: "company-add" */ '../pages/AddCompany.svelte'
+        )
+      ).default
   },
   '/404': {
-    name: '404',
     component: async () =>
-      (await import(/* webpackChunkName: "404" */ '../pages/404.svelte')).default
+      (
+        await import(
+          /* webpackPrefetch: true */ /* webpackChunkName: "404" */ '../pages/404.svelte'
+        )
+      ).default
   }
 }

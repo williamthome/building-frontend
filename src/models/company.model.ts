@@ -4,6 +4,10 @@ export interface Company {
   members: Member[]
 }
 
+export interface CreateCompanyDto {
+  name: string
+}
+
 export interface Member {
   userId: string
   companyRole: CompanyRole

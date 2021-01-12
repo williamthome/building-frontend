@@ -31,8 +31,9 @@ const appTitle = 'My app!'
  * Includes HtmlWebpackPluginOptions and custom options
  */
 const htmlDefinitions: HtmlTemplateDefinitions = {
-  template: 'src/layouts/index.ejs',
+  template: 'src/layouts/index.layout.ejs',
   title: appTitle,
+  base: '/',
   minify: {
     removeComments: true,
     collapseWhitespace: true,
@@ -92,6 +93,11 @@ const config: Configuration & WebpackDevServerConfiguration = {
     main: [
       // Note: Paths in the `stylesheets` variable will be added here automatically
       './src/main.ts'
+    ],
+    sw: [
+      './src/pwa/pwa.service-worker.ts',
+      './src/pwa/pwa.dedicated-worker.ts',
+      './src/pwa/pwa.shared-worker.ts'
     ]
   },
   resolve: {
@@ -103,7 +109,7 @@ const config: Configuration & WebpackDevServerConfiguration = {
     mainFields: ['svelte', 'browser', 'module', 'main']
   },
   output: {
-    publicPath: '',
+    publicPath: 'auto',
     devtoolModuleFilenameTemplate: '[absolute-resource-path]',
     path: __dirname + '/public/',
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
@@ -296,12 +302,6 @@ if (dev) {
 
 // These options should only apply to production builds
 if (prod) {
-  config.entry['sw'] = [
-    './src/pwa/pwa.service-worker.ts',
-    './src/pwa/pwa.dedicated-worker.ts',
-    './src/pwa/pwa.shared-worker.ts'
-  ]
-
   config.plugins.push(
     // Minify and treeshake JS
     new TerserPlugin({

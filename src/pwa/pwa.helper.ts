@@ -1,15 +1,17 @@
 import { DEBUG, CACHING_DURATION, SW_EXPIRES_HEADER_NAME } from './pwa.config'
 
-export const log = (...data: unknown[]) => DEBUG && console.log('[SERVICE WORKER]', data)
-export const error = (...data: unknown[]) => DEBUG && console.error('[SERVICE WORKER]', data)
+export const log = (...data: unknown[]) => DEBUG && console.log('[SERVICE WORKER]', ...data)
+export const error = (...data: unknown[]) => DEBUG && console.error('[SERVICE WORKER]', ...data)
 
 /**
  * Clear all caches of the ServiceWorker.
  */
 export const clearServiceWorkerCache = async (): Promise<void> => {
   const keys = await self.caches.keys()
-  for (const key of keys) {
-    await self.caches.delete(key)
+  if (keys.length > 0) {
+    log('Purging caches...')
+    for (const key of keys) await self.caches.delete(key)
+    log(keys.length, 'caches purged')
   }
 }
 

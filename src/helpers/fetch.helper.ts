@@ -10,10 +10,10 @@ export const isNetworkError = (obj: unknown): obj is { error: string } =>
   obj instanceof Error && obj.message === 'Network Error'
 
 export const formatUri = <TRequest>(
-  opts: Pick<HttpClientOptions<TRequest>, 'uri' | 'params' | 'query'> & { baseUrl: string }
+  opts: Pick<HttpClientOptions<TRequest>, 'uri' | 'params' | 'query'> & { baseUrl?: string }
 ): string => {
   const { baseUrl, uri, params, query } = opts
-  let uriWithParamsAndQuery = baseUrl + uri
+  let uriWithParamsAndQuery = baseUrl ? baseUrl + uri : uri
   if (params) {
     for (const [key, value] of Object.entries(params)) {
       uriWithParamsAndQuery = uriWithParamsAndQuery.replace(`:${key}`, value)

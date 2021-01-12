@@ -4,7 +4,9 @@ import { log, error, cacheUrl } from './pwa.helper'
 declare var self: ServiceWorkerGlobalScope
 
 // The install handler takes care of precaching the resources we always need.
-self.addEventListener('install', (event) => {
+self.addEventListener('install', async (event) => {
+  if (process.env.NODE_ENV === 'development') return
+
   event.waitUntil(
     caches
       .open(PRECACHE_NAME)
@@ -14,10 +16,14 @@ self.addEventListener('install', (event) => {
       .then(() => self.skipWaiting())
       .catch((err) => error(err))
   )
+
+  log('INSTALLED')
 })
 
 // The activate handler takes care of cleaning up old caches.
 self.addEventListener('activate', (event) => {
+  if (process.env.NODE_ENV === 'development') return
+
   const currentCaches = [PRECACHE_NAME, RUNTIME_NAME]
   event.waitUntil(
     caches
@@ -35,12 +41,16 @@ self.addEventListener('activate', (event) => {
       .then(() => self.clients.claim())
       .catch((err) => error(err))
   )
+
+  log('ACTIVATED')
 })
 
 // The fetch handler serves responses for same-origin resources from a cache.
 // If no response is found, it populates the runtime cache with the response
 // from the network before returning it to the page.
 self.addEventListener('fetch', (event) => {
+  if (process.env.NODE_ENV === 'development') return
+
   const { request } = event
   const { url } = request
   const { origin } = self.location

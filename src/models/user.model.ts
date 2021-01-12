@@ -1,4 +1,4 @@
-import type { Company, CompanyRole, UserFeatures } from "./company";
+import type { Company, CompanyRole, UserFeatures } from './company.model'
 
 export interface Authentication {
   email: string
@@ -17,8 +17,9 @@ export interface User {
   verified: boolean
   name?: string
   accessToken?: string
-  activeCompanyId?: string
+  activeCompanyId?: Company['id']
   rights?: UserRights[]
+  lastActiveCompany?: Company
 }
 
 export interface UserRights {

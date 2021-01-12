@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { currentPath } from '../store'
+  import { navigateTo } from '../helpers'
 </script>
 
 <h1>Error! Page not found!</h1>
-<button on:click="{() => ($currentPath = '/')}">Go to home</button>
+<button on:click="{() => navigateTo('/')}">Go to home</button>
 
 <style>
   h1 {

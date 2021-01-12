@@ -2,7 +2,7 @@
   import { currentRoute } from '../store'
 
   let component: unknown
-  $: $currentRoute.component().then((c) => (component = c))
+  $: $currentRoute?.component().then((c) => (component = c))
 </script>
 
 {#if component}

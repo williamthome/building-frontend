@@ -23,7 +23,7 @@ export class NativeHttpClientAdapter extends HttpClientBaseAdapter {
 
       const headers: Headers = new Headers()
       if (accessToken) headers.append('Authorization', `Bearer ${accessToken}`)
-      if (body && method !== 'GET') headers.append('Content-Type', 'application/json')
+      if (body && method !== 'GET') headers.append('Content-Type', 'application/json; charset=utf-8')
 
       const response = await fetch(formatUri({ baseUrl: this.baseUrl, uri, params, query }), {
         method,
@@ -34,7 +34,7 @@ export class NativeHttpClientAdapter extends HttpClientBaseAdapter {
 
       clearTimeout(timeoutId)
 
-      const data = await response.json()
+      const data = response.status === 204 ? undefined : await response.json()
 
       return !isResponseError(data) ? data : { error: data.error }
     } catch (error) {

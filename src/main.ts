@@ -1,24 +1,16 @@
+import './extensions'
+import registerServiceWorker from './pwa/pwa.register'
+import unregisterServiceWorker from './pwa/pwa.unregister'
 import { user, loading } from './store'
-import { getCookie, deleteCookie } from './helpers'
+import { getCookie, deleteCookie, navigateTo, navigateToBestMatch } from './helpers'
 import type { User } from './models'
 import App from './App.svelte'
 
-const init = async (): Promise<App> => {
+const init = async (): Promise<void> => {
   loading.set(true)
 
-  if (process.env.NODE_ENV === 'production') {
-    const registerServiceWorker = (await import('./pwa/pwa.register')).default
-    await registerServiceWorker()
-  } else {
-    if (window.caches) {
-      const keys = await window.caches.keys()
-      if (keys.length > 0) {
-        console.log('[PURGE CACHES]', 'Running...')
-        for (const key of keys) await window.caches.delete(key)
-        console.log('[PURGE CACHES]', 'Ok')
-      }
-    }
-  }
+  if (process.env.NODE_ENV === 'production') await registerServiceWorker()
+  else await unregisterServiceWorker()
 
   const accessToken = getCookie('accessToken')
 
@@ -42,11 +34,16 @@ const init = async (): Promise<App> => {
     })
   }
 
-  loading.set(false)
+  if (history.state) navigateTo(history.state.path, history.state.params)
+  else navigateToBestMatch(location.pathname)
 
-  return new App({
-    target: document.body
-  })
+  addEventListener('popstate', ({ state }: PopStateEvent) => navigateTo(state?.path || '/'))
+
+  loading.set(false)
 }
 
-export default init()
+init()
+
+export default new App({
+  target: document.body
+})

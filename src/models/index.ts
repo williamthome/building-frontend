@@ -1,2 +1,3 @@
-export * from './user'
-export * from './company'
+export * from './user.model'
+export * from './company.model'
+export * from './plan.model'

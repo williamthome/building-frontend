@@ -1,8 +1,8 @@
 <script>
-  import { loggedIn } from '../store'
+  import { user } from '../store'
 </script>
 
-{#if $loggedIn}
+{#if $user}
   <slot />
 {:else}
   <slot name="unauth" />

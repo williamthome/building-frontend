@@ -1,10 +1,12 @@
 <script lang="ts">
-  import { beforeUpdate } from 'svelte'
-  import { loggedIn, currentPath, loading, user } from '../store'
-  import type { UserRights } from '../models'
+  import { onMount } from 'svelte'
+  import { loading, user } from '../store'
+  import type { UserRights, Company } from '../models'
+  import { navigateTo } from '../helpers'
 
-  beforeUpdate(async () => {
-    if (!$loggedIn) return ($currentPath = '/login')
+  $: anyRights = $user?.rights?.length > 0
+
+  onMount(async () => {
     if ($user.rights) return
 
     $loading = true
@@ -23,20 +25,58 @@
 
     $loading = false
   })
+
+  async function navigateToCompanyPage(company: Company) {
+    const navigate = () =>
+      navigateTo('/company/:id', {
+        id: company.id
+        // name: company.name.toSpinalCase()
+      })
+
+    if ($user.activeCompanyId === company.id) return navigate()
+
+    const api = (await import(/* webpackChunkName: "api" */ '../api')).default
+
+    await api.fetch({
+      requestOpts: {
+        method: 'PATCH',
+        uri: '/user/active-company/:companyId',
+        params: {
+          companyId: company.id
+        }
+      },
+      onSuccess: () => {
+        $user.activeCompanyId = company.id
+
+        navigate()
+      },
+      onError: (error) => {
+        console.error(error)
+      }
+    })
+  }
 </script>
 
-<h1>Profile page</h1>
+{#if $user}
+  <h1>Profile page</h1>
 
-{#if $user.rights?.length > 0}
-  <h2>Your companies:</h2>
-  <ul>
-    {#each $user.rights as { company }, i}
-      <li>{company.name}</li>
-    {/each}
-  </ul>
-{:else}
-  <h2>No companies</h2>
-  <button> Create your first! </button>
+  {#if anyRights}
+    <h2>Your companies:</h2>
+    <ul>
+      {#each $user.rights as { company }}
+        <li>
+          <button
+            on:click="{async () => await navigateToCompanyPage(company)}"
+          >{company.name}</button>
+        </li>
+      {/each}
+    </ul>
+  {:else}
+    <h2>No companies</h2>
+  {/if}
+  <button
+    on:click="{() => navigateTo('/company')}"
+  >{anyRights ? 'Add' : 'Create your first!'}</button>
 {/if}
 
 <style>

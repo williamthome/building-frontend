@@ -1,43 +1,42 @@
 <script lang="ts">
-  import { NavItem, RouterLink, Authguard } from '.'
+  import { RouterLink, Authguard } from '.'
   import { user, currentPath } from '../store'
   import { routes } from '../config'
-  import { deleteCookie } from '../helpers'
+  import { deleteCookie, navigateTo } from '../helpers'
 
   async function logout() {
     deleteCookie('accessToken')
     $user = undefined
-    routes['/login'].locked = false
-    $currentPath = '/login'
+    navigateTo('/login')
   }
 </script>
 
 {#if $currentPath !== '/404'}
   <nav role="navigation">
     <ul class="brand">
-      <RouterLink pagePath="{'/'}" />
+      <RouterLink to="{'/'}" label="Home" />
     </ul>
     <ul class="links">
       <li>
         <Authguard>
           <li class="dropdown">
-            <NavItem label="{$user.email}" />
+            <RouterLink label="{$user.email}" />
             <ul class="dropdown-content">
               <li>
-                <RouterLink pagePath="{'/profile'}" />
+                <RouterLink to="{'/profile'}" label="Profile" />
               </li>
               <li>
-                <NavItem href="/logout" label="Logout" action="{logout}" />
+                <RouterLink label="Logout" onClick="{logout}" />
               </li>
             </ul>
           </li>
 
           <ul slot="unauth">
             <li>
-              <RouterLink pagePath="{'/register'}" />
+              <RouterLink to="{'/register'}" label="Register" />
             </li>
             <li>
-              <RouterLink pagePath="{'/login'}" />
+              <RouterLink to="{'/login'}" label="Login" />
             </li>
           </ul>
         </Authguard>

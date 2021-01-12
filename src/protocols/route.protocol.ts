@@ -1,8 +1,14 @@
+import type { RoutePath } from '../config'
+
 interface Route {
-  name: string
-  component: () => Promise<unknown>
-  locked?: boolean
-  // guard?: boolean | 'auth' | 'unauth'
+  component: (...args: any[]) => Promise<unknown>
+  validations?: {
+    valid: () => boolean | Promise<boolean>
+    ifInvalid?: {
+      redirectTo?: RoutePath
+      do?: () => void | Promise<void>
+    }
+  }[]
 }
 
 export type RouteConfig<T extends string> = { [K in T]: Route }
