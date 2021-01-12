@@ -1,7 +1,6 @@
 <script lang="ts">
   import { RouterLink, Authguard } from '.'
   import { user, currentPath } from '../store'
-  import { routes } from '../config'
   import { deleteCookie, navigateTo } from '../helpers'
 
   async function logout() {
@@ -14,7 +13,9 @@
 {#if $currentPath !== '/404'}
   <nav role="navigation">
     <ul class="brand">
-      <RouterLink to="{'/'}" label="Home" />
+      <li>
+        <RouterLink to="{'/'}" label="Home" />
+      </li>
     </ul>
     <ul class="links">
       <li>

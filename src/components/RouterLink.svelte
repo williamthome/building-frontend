@@ -38,7 +38,8 @@
     padding: 1rem;
 
     &.current {
-      color: red;
+      color: white;
+      background-color: black;
     }
   }
 </style>
