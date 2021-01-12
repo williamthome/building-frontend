@@ -2,6 +2,7 @@
   import { onMount } from 'svelte'
   import { user, loading, plans } from '../store'
   import type { Company, CreateCompanyDto, Plan } from '../models'
+  import { CompanyRole } from '../models'
   import { formDataToJSON, navigateTo } from '../helpers'
 
   onMount(async () => {
@@ -43,9 +44,14 @@
         body: dto
       },
       onSuccess: async (company) => {
-        console.log('COMPANY CREATED', company)
-
-        navigateTo('/')
+        $user.rights.push({
+          company,
+          features: 0,
+          role: CompanyRole.master
+        })
+        navigateTo('/company/:id', {
+          id: company.id
+        })
       },
       onError: ({ error }) => {
         console.error(error)

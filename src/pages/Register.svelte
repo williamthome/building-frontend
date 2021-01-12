@@ -1,7 +1,7 @@
 <script lang="ts">
   import { user, loading } from '../store'
   import { routes } from '../config'
-  import type { Registration, User } from '../models'
+  import type { Authentication, Registration, User } from '../models'
   import { formDataToJSON, navigateTo, setCookie, setLocalStorage } from '../helpers'
 
   async function register(event: Event) {
@@ -18,19 +18,52 @@
         uri: '/user',
         body: dto
       },
-      onSuccess: async ({ user: userResponse }) => {
-        setCookie({
-          cookie: 'accessToken',
-          value: userResponse.accessToken,
-          expires: {
-            in: 1,
-            unit: 'hour'
+      onSuccess: async ({ user: registerUserResponse, verificationToken }) => {
+        /**
+         * !! WARN: THIS IS ONLY FOR DEV PURPOSE !!
+         *
+         * Remove this fetch method for production
+         * Copy and paste 'onSuccess' method
+         */
+        await api.fetch({
+          requestOpts: {
+            method: 'POST',
+            uri: '/user/verify',
+            query: {
+              token: verificationToken
+            }
+          },
+          onSuccess: async () => {
+            await api.fetch<Authentication, User>({
+              requestOpts: {
+                method: 'POST',
+                uri: '/login',
+                body: {
+                  email: dto.email,
+                  password: dto.password
+                }
+              },
+              onSuccess: (loginUserResponse) => {
+                setCookie({
+                  cookie: 'accessToken',
+                  value: loginUserResponse.accessToken,
+                  expires: {
+                    in: 1,
+                    unit: 'hour'
+                  }
+                })
+                setLocalStorage('lastLoggedMail', loginUserResponse.email)
+
+                $user = loginUserResponse
+                navigateTo('/profile')
+              }
+            })
+          },
+          onError: ({ error }) => {
+            console.error(error)
+            alert('Error! ' + error)
           }
         })
-        setLocalStorage('lastLoggedMail', userResponse.email)
-
-        $user = userResponse
-        navigateTo('/profile')
       },
       onError: ({ error }) => {
         console.error(error)

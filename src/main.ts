@@ -27,6 +27,11 @@ const init = async (): Promise<void> => {
       },
       onSuccess: (userResponse) => {
         user.set(userResponse)
+
+        // if (userResponse.activeCompanyId)
+        //   navigateTo('/company/:id', {
+        //     id: userResponse.activeCompanyId
+        //   })
       },
       onError: () => {
         deleteCookie('accessToken')
