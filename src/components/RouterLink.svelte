@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { currentPath } from '../store'
-  import type { RoutePath } from '../config'
-  import type { HttpParameters, HttpQuery } from '../protocols'
-  import { formatUri, navigateTo } from '../helpers'
+  import { currentPath } from '@/store'
+  import type { RoutePath } from '@/config'
+  import type { HttpParameters, HttpQuery } from '@/protocols'
+  import { formatUri, navigateTo } from '@/helpers'
 
   export let to: RoutePath | undefined = undefined
   export let label: string

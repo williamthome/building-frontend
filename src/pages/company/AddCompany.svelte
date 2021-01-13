@@ -1,9 +1,9 @@
 <script lang="ts">
   import { onMount } from 'svelte'
-  import { user, loading, plans } from '../store'
-  import type { Company, CreateCompanyDto, Plan } from '../models'
-  import { CompanyRole } from '../models'
-  import { formDataToJSON, navigateTo } from '../helpers'
+  import { user, loading, plans } from '@/store'
+  import type { Company, CreateCompanyDto, Plan } from '@/models'
+  import { CompanyRole } from '@/models'
+  import { formDataToJSON, navigateTo } from '@/helpers'
 
   $: plansLoaded = allPlans.length > 0
   $: allPlans = $plans || []
@@ -12,7 +12,7 @@
     if (!$plans) {
       $loading = true
 
-      const api = (await import(/* webpackChunkName: "api" */ '../api')).default
+      const api = (await import(/* webpackChunkName: "api" */ '@/api')).default
 
       await api.fetch<undefined, Plan[]>({
         requestOpts: {
@@ -38,7 +38,7 @@
     const form = event.target
     const dto = formDataToJSON<CreateCompanyDto>(form!)
 
-    const api = (await import(/* webpackChunkName: "api" */ '../api')).default
+    const api = (await import(/* webpackChunkName: "api" */ '@/api')).default
 
     await api.fetch<CreateCompanyDto, Company>({
       requestOpts: {

@@ -1,13 +1,13 @@
 <script lang="ts">
-  import { user, loading } from '../store'
-  import type { Authentication, User } from '../models'
+  import { user, loading } from '@/store'
+  import type { Authentication, User } from '@/models'
   import {
     formDataToJSON,
     setCookie,
     getLocalStorage,
     setLocalStorage,
     navigateTo
-  } from '../helpers'
+  } from '@/helpers'
 
   async function login(event: Event) {
     $loading = true
@@ -15,7 +15,7 @@
     const form = event.target
     const dto = formDataToJSON<Authentication>(form!)
 
-    const api = (await import(/* webpackChunkName: "api" */ '../api')).default
+    const api = (await import(/* webpackChunkName: "api" */ '@/api')).default
 
     await api.fetch<Authentication, User>({
       requestOpts: {

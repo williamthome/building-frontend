@@ -1,5 +1,5 @@
-import { isResponseError } from '../../helpers'
-import type { HttpClient, HttpClientError, HttpClientOptions } from '../../protocols'
+import { isResponseError } from '@/helpers'
+import type { HttpClient, HttpClientError, HttpClientOptions } from '@/protocols'
 
 export abstract class HttpClientBaseAdapter implements HttpClient {
   constructor(protected readonly baseUrl: string) {}

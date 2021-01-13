@@ -1,12 +1,6 @@
 import { HttpClientBaseAdapter } from '.'
-import type { HttpClientOptions, HttpClientError } from '../../protocols'
-import {
-  getCookie,
-  formatUri,
-  isNetworkError,
-  isResponseError,
-  isTimeoutError
-} from '../../helpers'
+import type { HttpClientOptions, HttpClientError } from '@/protocols'
+import { getCookie, formatUri, isNetworkError, isResponseError, isTimeoutError } from '@/helpers'
 
 export class NativeHttpClientAdapter extends HttpClientBaseAdapter {
   protected request = async <TRequest, TResponse>(

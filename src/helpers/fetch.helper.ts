@@ -1,4 +1,4 @@
-import type { HttpClientOptions } from '../protocols'
+import type { HttpClientOptions } from '@/protocols'
 
 export const isResponseError = (obj: unknown): obj is { error: string } =>
   typeof obj === 'object' && !!obj && 'error' in obj

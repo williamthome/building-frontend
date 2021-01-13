@@ -1,4 +1,4 @@
-import type { RoutePath } from '../config'
+import type { RoutePath } from '@/config'
 
 interface Route {
   component: (...args: unknown[]) => Promise<unknown>

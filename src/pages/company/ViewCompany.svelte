@@ -1,8 +1,8 @@
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte'
-  import { loading, user } from '../store'
-  import type { Company } from '../models'
-  import { navigateTo } from '../helpers'
+  import { loading, user } from '@/store'
+  import type { Company } from '@/models'
+  import { navigateTo } from '@/helpers'
 
   let company: Company
 
@@ -15,7 +15,7 @@
 
       $loading = true
 
-      const api = (await import(/* webpackChunkName: "api" */ '../api')).default
+      const api = (await import(/* webpackChunkName: "api" */ '@/api')).default
 
       await api.fetch<undefined, Company>({
         requestOpts: {

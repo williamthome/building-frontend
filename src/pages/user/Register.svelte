@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { user, loading } from '../store'
-  import type { Authentication, Registration, User } from '../models'
-  import { formDataToJSON, navigateTo, setCookie, setLocalStorage } from '../helpers'
+  import { user, loading } from '@/store'
+  import type { Authentication, Registration, User } from '@/models'
+  import { formDataToJSON, navigateTo, setCookie, setLocalStorage } from '@/helpers'
 
   async function register(event: Event) {
     $loading = true
@@ -9,7 +9,7 @@
     const form = event.target
     const dto = formDataToJSON<Registration>(form!)
 
-    const api = (await import(/* webpackChunkName: "api" */ '../api')).default
+    const api = (await import(/* webpackChunkName: "api" */ '@/api')).default
 
     await api.fetch<Registration, { user: User; verificationToken: string }>({
       requestOpts: {

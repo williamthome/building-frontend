@@ -1,6 +1,6 @@
 import { isValidRoute } from '.'
-import { RoutePath, routePaths, routes } from '../config'
-import { currentPath } from '../store'
+import { RoutePath, routePaths, routes } from '@/config'
+import { currentPath } from '@/store'
 
 export const navigateTo = async (
   path: RoutePath,

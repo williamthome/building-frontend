@@ -12,7 +12,10 @@
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "noImplicitAny": true
+    "noImplicitAny": true,
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
 
   "include": ["src/**/*.ts"],

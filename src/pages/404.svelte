@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { navigateTo } from '../helpers'
+  import { navigateTo } from '@/helpers'
 </script>
 
 <h1>Error! Page not found!</h1>

@@ -1,10 +1,10 @@
-import './extensions'
-import registerServiceWorker from './pwa/pwa.register'
-import unregisterServiceWorker from './pwa/pwa.unregister'
-import { user, loading } from './store'
-import { getCookie, deleteCookie, navigateTo, navigateToBestMatch } from './helpers'
-import type { User } from './models'
-import App from './App.svelte'
+import '@/extensions'
+import registerServiceWorker from '@/pwa/pwa.register'
+import unregisterServiceWorker from '@/pwa/pwa.unregister'
+import { user, loading } from '@/store'
+import { getCookie, deleteCookie, navigateTo, navigateToBestMatch } from '@/helpers'
+import type { User } from '@/models'
+import App from '@/App.svelte'
 
 const init = async (): Promise<void> => {
   loading.set(true)
@@ -15,7 +15,7 @@ const init = async (): Promise<void> => {
   const accessToken = getCookie('accessToken')
 
   if (accessToken) {
-    const api = (await import(/* webpackChunkName: "api" */ './api')).default
+    const api = (await import(/* webpackChunkName: "api" */ '@/api')).default
 
     await api.fetch<string, User>({
       requestOpts: {

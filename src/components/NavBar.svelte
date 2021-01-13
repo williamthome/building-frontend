@@ -1,7 +1,7 @@
 <script lang="ts">
   import { RouterLink, Authguard } from '.'
-  import { user, currentPath } from '../store'
-  import { deleteCookie, navigateTo } from '../helpers'
+  import { user, currentPath } from '@/store'
+  import { deleteCookie, navigateTo } from '@/helpers'
 
   $: email = $user?.email ?? ''
 

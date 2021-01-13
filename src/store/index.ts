@@ -1,7 +1,7 @@
 import { writable, derived } from 'svelte/store'
-import { routes } from '../config'
-import type { RoutePath } from '../config'
-import type { User, Plan } from '../models'
+import { routes } from '@/config'
+import type { RoutePath } from '@/config'
+import type { User, Plan } from '@/models'
 
 // App
 

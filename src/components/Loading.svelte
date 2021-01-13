@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { loading } from '../store'
+  import { loading } from '@/store'
 </script>
 
 {#if $loading}

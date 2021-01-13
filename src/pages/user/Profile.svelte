@@ -1,8 +1,8 @@
 <script lang="ts">
   import { onMount } from 'svelte'
-  import { loading, user } from '../store'
-  import type { UserRights, Company } from '../models'
-  import { navigateTo } from '../helpers'
+  import { loading, user } from '@/store'
+  import type { UserRights, Company } from '@/models'
+  import { navigateTo } from '@/helpers'
 
   $: rights = $user?.rights ?? []
   $: anyRights = rights.length > 0
@@ -12,7 +12,7 @@
 
     $loading = true
 
-    const api = (await import(/* webpackChunkName: "api" */ '../api')).default
+    const api = (await import(/* webpackChunkName: "api" */ '@/api')).default
 
     await api.fetch<undefined, UserRights[]>({
       requestOpts: {
@@ -35,7 +35,7 @@
 
     if ($user!.activeCompanyId === company.id) return navigate()
 
-    const api = (await import(/* webpackChunkName: "api" */ '../api')).default
+    const api = (await import(/* webpackChunkName: "api" */ '@/api')).default
 
     await api.fetch({
       requestOpts: {

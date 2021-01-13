@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { currentRoute } from '../store'
+  import { currentRoute } from '@/store'
 
   let component: unknown
   $: $currentRoute?.component().then((c) => (component = c))

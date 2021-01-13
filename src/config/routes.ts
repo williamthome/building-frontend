@@ -1,7 +1,7 @@
 import { get } from 'svelte/store'
-import { getCookie } from '../helpers'
-import type { RouteConfig } from '../protocols'
-import { user } from '../store'
+import { getCookie } from '@/helpers'
+import type { RouteConfig } from '@/protocols'
+import { user } from '@/store'
 
 export const routePaths = [
   '/',
@@ -20,7 +20,7 @@ export const routes: RouteConfig<RoutePath> = {
     component: async () =>
       (
         await import(
-          /* webpackPrefetch: true */ /* webpackChunkName: "home" */ '../pages/Home.svelte'
+          /* webpackPrefetch: true */ /* webpackChunkName: "home" */ '@/pages/Home.svelte'
         )
       ).default
   },
@@ -36,7 +36,7 @@ export const routes: RouteConfig<RoutePath> = {
     component: async () =>
       (
         await import(
-          /* webpackPrefetch: true */ /* webpackChunkName: "register" */ '../pages/Register.svelte'
+          /* webpackPrefetch: true */ /* webpackChunkName: "register" */ '@/pages/user/Register.svelte'
         )
       ).default
   },
@@ -52,7 +52,7 @@ export const routes: RouteConfig<RoutePath> = {
     component: async () =>
       (
         await import(
-          /* webpackPrefetch: true */ /* webpackChunkName: "login" */ '../pages/Login.svelte'
+          /* webpackPrefetch: true */ /* webpackChunkName: "login" */ '@/pages/user/Login.svelte'
         )
       ).default
   },
@@ -69,7 +69,7 @@ export const routes: RouteConfig<RoutePath> = {
     component: async () =>
       (
         await import(
-          /* webpackPrefetch: true */ /* webpackChunkName: "profile" */ '../pages/Profile.svelte'
+          /* webpackPrefetch: true */ /* webpackChunkName: "profile" */ '@/pages/user/Profile.svelte'
         )
       ).default
   },
@@ -92,7 +92,7 @@ export const routes: RouteConfig<RoutePath> = {
     component: async () =>
       (
         await import(
-          /* webpackPrefetch: true */ /* webpackChunkName: "company-view" */ '../pages/Company.svelte'
+          /* webpackPrefetch: true */ /* webpackChunkName: "company-view" */ '@/pages/company/ViewCompany.svelte'
         )
       ).default
   },
@@ -109,16 +109,13 @@ export const routes: RouteConfig<RoutePath> = {
     component: async () =>
       (
         await import(
-          /* webpackPrefetch: true */ /* webpackChunkName: "company-add" */ '../pages/AddCompany.svelte'
+          /* webpackPrefetch: true */ /* webpackChunkName: "company-add" */ '@/pages/company/AddCompany.svelte'
         )
       ).default
   },
   '/404': {
     component: async () =>
-      (
-        await import(
-          /* webpackPrefetch: true */ /* webpackChunkName: "404" */ '../pages/404.svelte'
-        )
-      ).default
+      (await import(/* webpackPrefetch: true */ /* webpackChunkName: "404" */ '@/pages/404.svelte'))
+        .default
   }
 }
