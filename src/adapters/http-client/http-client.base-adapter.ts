@@ -2,7 +2,7 @@ import { isResponseError } from '../../helpers'
 import type { HttpClient, HttpClientError, HttpClientOptions } from '../../protocols'
 
 export abstract class HttpClientBaseAdapter implements HttpClient {
-  protected readonly baseUrl = 'http://localhost:5051'
+  constructor(protected readonly baseUrl: string) {}
 
   fetch = async <TRequest, TResponse>(opts: {
     requestOpts: HttpClientOptions<TRequest>

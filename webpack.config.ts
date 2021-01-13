@@ -3,7 +3,7 @@ import fs from 'fs'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import TerserPlugin from 'terser-webpack-plugin'
 import Preprocess from 'svelte-preprocess'
-import { Configuration, HotModuleReplacementPlugin } from 'webpack'
+import { Configuration, HotModuleReplacementPlugin, EnvironmentPlugin } from 'webpack'
 import type { Configuration as WebpackDevServerConfiguration } from 'webpack-dev-server'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 import { DuplicatesPlugin } from 'inspectpack/plugin'
@@ -238,6 +238,10 @@ const config: Configuration & WebpackDevServerConfiguration = {
         { from: './src/assets/manifest.json' },
         { from: './src/assets/images', to: 'images' }
       ]
+    }),
+    new EnvironmentPlugin({
+      NODE_ENV: env,
+      API_URL: 'https://api-building.herokuapp.com'
     })
   ],
   optimization: {

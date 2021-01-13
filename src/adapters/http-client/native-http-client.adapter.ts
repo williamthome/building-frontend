@@ -18,15 +18,19 @@ export class NativeHttpClientAdapter extends HttpClientBaseAdapter {
       const accessToken = getCookie('accessToken')
 
       const controller = new AbortController()
-      const timeout = 7000
+      const timeout = 10_000
       const timeoutId = setTimeout(() => controller.abort(), timeout)
 
       const headers: Headers = new Headers()
       if (accessToken) headers.append('Authorization', `Bearer ${accessToken}`)
-      if (body && method !== 'GET') headers.append('Content-Type', 'application/json; charset=utf-8')
+      if (body && method !== 'GET')
+        headers.append('Content-Type', 'application/json; charset=utf-8')
+      else headers.append('Accept', 'application/json; charset=utf-8')
 
       const response = await fetch(formatUri({ baseUrl: this.baseUrl, uri, params, query }), {
         method,
+        mode: 'cors',
+        credentials: accessToken ? 'include' : 'omit',
         body: method !== 'GET' ? JSON.stringify(body) : undefined,
         headers,
         signal: controller.signal
