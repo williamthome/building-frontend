@@ -264,7 +264,7 @@ if (Array.isArray(stylesheets) || typeof stylesheets === 'string') {
       const mappedMain = main instanceof Array ? main : [main.toString()]
 
       // Add to the beginning of the main using unshift
-      mappedMain.unshift.apply(mappedMain, stylesheets)
+      mappedMain.unshift(...stylesheets)
     }
   }
 }

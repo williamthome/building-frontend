@@ -10,6 +10,7 @@
     "serve": "rimraf public && npm run webpack-ts NODE_ENV=production webpack serve --config webpack.config.ts --progress --profile --watch",
     "validate": "svelte-check",
     "update:packages": "npx npm-check-updates -u && npm install",
+    "lint": "npx eslint ./**/*.{ts,svelte} --cache --fix",
     "prettify": "npx prettier --write ./**/*.{ts,svelte}",
     "deploy": "npm run build && firebase deploy"
   },
@@ -42,6 +43,7 @@
     "css-loader": "^5.0.1",
     "ejs-webpack-loader": "^2.2.2",
     "eslint": "^7.17.0",
+    "eslint-config-prettier": "^7.1.0",
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-svelte3": "^3.0.0",
     "file-loader": "^6.2.0",

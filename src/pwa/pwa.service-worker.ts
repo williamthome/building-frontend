@@ -1,7 +1,7 @@
 import { PRECACHE_NAME, PRECACHE_URLS, RUNTIME_NAME, SW_EXPIRES_HEADER_NAME } from './pwa.config'
 import { log, error, cacheUrl } from './pwa.helper'
 
-declare var self: ServiceWorkerGlobalScope
+declare const self: ServiceWorkerGlobalScope
 
 // The install handler takes care of precaching the resources we always need.
 self.addEventListener('install', async (event) => {
@@ -72,11 +72,16 @@ self.addEventListener('fetch', (event) => {
           // If there is a match from the cache
           if (response) {
             log(`Serving ${url} from cache`)
-            const expirationDate = Date.parse(response.headers.get(SW_EXPIRES_HEADER_NAME))
 
-            // Check it is not already expired and return from the cache
-            if (expirationDate > Date.now()) {
-              return response
+            const expirationHeader = response.headers.get(SW_EXPIRES_HEADER_NAME)
+
+            if (expirationHeader) {
+              const expirationDate = Date.parse(expirationHeader)
+
+              // Check it is not already expired and return from the cache
+              if (expirationDate > Date.now()) {
+                return response
+              }
             }
           }
 

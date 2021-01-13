@@ -12,7 +12,7 @@
   export let params: HttpParameters | undefined = undefined
   export let query: HttpQuery | undefined = undefined
 
-  $: uri = formatUri({ uri: to, params, query })
+  $: uri = to ? formatUri({ uri: to, params, query }) : undefined
 
   async function action() {
     if (to) {

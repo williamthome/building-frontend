@@ -4,10 +4,11 @@
   import type { UserRights, Company } from '../models'
   import { navigateTo } from '../helpers'
 
-  $: anyRights = $user?.rights?.length > 0
+  $: rights = $user?.rights ?? []
+  $: anyRights = rights.length > 0
 
   onMount(async () => {
-    if ($user.rights) return
+    if ($user?.rights) return
 
     $loading = true
 
@@ -19,7 +20,7 @@
         uri: '/user/rights'
       },
       onSuccess: async (rights) => {
-        $user.rights = rights
+        $user!.rights = rights
       }
     })
 
@@ -30,10 +31,9 @@
     const navigate = () =>
       navigateTo('/company/:id', {
         id: company.id
-        // name: company.name.toSpinalCase()
       })
 
-    if ($user.activeCompanyId === company.id) return navigate()
+    if ($user!.activeCompanyId === company.id) return navigate()
 
     const api = (await import(/* webpackChunkName: "api" */ '../api')).default
 
@@ -46,7 +46,7 @@
         }
       },
       onSuccess: () => {
-        $user.activeCompanyId = company.id
+        $user!.activeCompanyId = company.id
 
         navigate()
       },
@@ -63,7 +63,7 @@
   {#if anyRights}
     <h2>Your companies:</h2>
     <ul>
-      {#each $user.rights as { company }}
+      {#each rights as { company }}
         <li>
           <button
             on:click="{async () => await navigateToCompanyPage(company)}"

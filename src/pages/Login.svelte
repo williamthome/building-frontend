@@ -1,15 +1,19 @@
 <script lang="ts">
-  import { onMount } from 'svelte'
   import { user, loading } from '../store'
-  import { routes } from '../config'
   import type { Authentication, User } from '../models'
-  import { formDataToJSON, setCookie, getLocalStorage, setLocalStorage, navigateTo } from '../helpers'
+  import {
+    formDataToJSON,
+    setCookie,
+    getLocalStorage,
+    setLocalStorage,
+    navigateTo
+  } from '../helpers'
 
   async function login(event: Event) {
     $loading = true
 
     const form = event.target
-    const dto = formDataToJSON<Authentication>(form)
+    const dto = formDataToJSON<Authentication>(form!)
 
     const api = (await import(/* webpackChunkName: "api" */ '../api')).default
 
@@ -31,9 +35,10 @@
         setLocalStorage('lastLoggedMail', userResponse.email)
 
         $user = userResponse
-        if ($user.activeCompanyId) {
+        const { activeCompanyId } = userResponse
+        if (activeCompanyId) {
           navigateTo('/company/:id', {
-            id: $user.activeCompanyId
+            id: activeCompanyId
           })
         } else navigateTo('/profile')
       },

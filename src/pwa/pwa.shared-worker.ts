@@ -1,3 +1,3 @@
-declare var self: SharedWorkerGlobalScope
+// declare const self: SharedWorkerGlobalScope
 
 export {}

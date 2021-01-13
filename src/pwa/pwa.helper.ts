@@ -1,7 +1,8 @@
 import { DEBUG, CACHING_DURATION, SW_EXPIRES_HEADER_NAME } from './pwa.config'
 
-export const log = (...data: unknown[]) => DEBUG && console.log('[SERVICE WORKER]', ...data)
-export const error = (...data: unknown[]) => DEBUG && console.error('[SERVICE WORKER]', ...data)
+export const log = (...data: unknown[]): void => DEBUG && console.log('[SERVICE WORKER]', ...data)
+export const error = (...data: unknown[]): void =>
+  DEBUG && console.error('[SERVICE WORKER]', ...data)
 
 /**
  * Clear all caches of the ServiceWorker.
@@ -19,19 +20,18 @@ export const clearServiceWorkerCache = async (): Promise<void> => {
  * Get duration (in s) before (cache) expiration from headers of a fetch request
  * @param headers
  */
-export const getExpiresFromHeaders = (headers: Headers) => {
+export const getExpiresFromHeaders = (headers: Headers): number | null => {
   // Try to use the Cache-Control header (and max-age)
-  if (headers.get('cache-control')) {
-    const maxAge = headers.get('cache-control').match(/max-age=(\d+)/)
+  const cacheControl = headers.get('cache-control')
+  if (cacheControl) {
+    const maxAge = cacheControl.match(/max-age=(\d+)/)
     return parseInt(maxAge ? maxAge[1] : '0', 10)
   }
 
   // Otherwise try to get expiration duration from the Expires header
-  if (headers.get('expires')) {
-    return (
-      parseInt((new Date(headers.get('expires')).getTime() / 1000).toString(), 10) -
-      new Date().getTime()
-    )
+  const expires = headers.get('expires')
+  if (expires) {
+    return parseInt((new Date(expires).getTime() / 1000).toString(), 10) - new Date().getTime()
   }
   return null
 }
@@ -51,7 +51,11 @@ export const cacheUrl = async (
 
     // Recreate a Response object from scratch to put it in the cache,
     // with the extra header for managing cache expiration
-    const cachedResponseFields = {
+    const cachedResponseFields: {
+      status: number
+      statusText: string
+      headers: Record<string, string>
+    } = {
       status: response.status,
       statusText: response.statusText,
       headers: { [SW_EXPIRES_HEADER_NAME]: expires.toUTCString() }

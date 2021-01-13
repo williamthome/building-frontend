@@ -3,6 +3,8 @@
   import { user, currentPath } from '../store'
   import { deleteCookie, navigateTo } from '../helpers'
 
+  $: email = $user?.email ?? ''
+
   async function logout() {
     deleteCookie('accessToken')
     $user = undefined
@@ -21,7 +23,7 @@
       <li>
         <Authguard>
           <li class="dropdown">
-            <RouterLink label="{$user.email}" />
+            <RouterLink label="{email}" />
             <ul class="dropdown-content">
               <li>
                 <RouterLink to="{'/profile'}" label="Profile" />

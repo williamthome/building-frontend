@@ -4,8 +4,12 @@
     "sourceType": "module"
   },
   "env": {
+    "node": true,
+    "commonjs": true,
+    "browser": true,
     "es6": true,
-    "browser": true
+    "serviceworker": true,
+    "worker": true
   },
   "parser": "@typescript-eslint/parser",
   "extends": [
@@ -22,6 +26,8 @@
     }
   ],
   "rules": {
-    "prettier/prettier": "error"
+    "prettier/prettier": "error",
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "error"
   }
 }

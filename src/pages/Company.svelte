@@ -6,34 +6,38 @@
 
   let company: Company
 
-  onMount(async () => {
-    if ($user.lastActiveCompany?.id === $user.activeCompanyId)
-      return (company = $user.lastActiveCompany)
-
-    $loading = true
-
-    const api = (await import(/* webpackChunkName: "api" */ '../api')).default
-
-    await api.fetch<undefined, Company>({
-      requestOpts: {
-        method: 'GET',
-        uri: '/user/active-company'
-      },
-      onSuccess: (activeCompany) => {
-        company = activeCompany
-        $user.activeCompanyId = company.id
-      },
-      onError: ({ error }) => {
-        alert(error)
-        navigateTo('/profile')
+  onMount(
+    async (): Promise<void> => {
+      if ($user!.lastActiveCompany?.id === $user!.activeCompanyId) {
+        company = $user!.lastActiveCompany!
+        return
       }
-    })
 
-    $loading = false
-  })
+      $loading = true
+
+      const api = (await import(/* webpackChunkName: "api" */ '../api')).default
+
+      await api.fetch<undefined, Company>({
+        requestOpts: {
+          method: 'GET',
+          uri: '/user/active-company'
+        },
+        onSuccess: (activeCompany) => {
+          company = activeCompany
+          $user!.activeCompanyId = company.id
+        },
+        onError: ({ error }) => {
+          alert(error)
+          navigateTo('/profile')
+        }
+      })
+
+      $loading = false
+    }
+  )
 
   onDestroy(() => {
-    if ($user) $user.lastActiveCompany = company
+    if ($user) $user!.lastActiveCompany = company
   })
 </script>
 

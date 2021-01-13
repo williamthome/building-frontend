@@ -5,6 +5,9 @@
   import { CompanyRole } from '../models'
   import { formDataToJSON, navigateTo } from '../helpers'
 
+  $: plansLoaded = allPlans.length > 0
+  $: allPlans = $plans || []
+
   onMount(async () => {
     if (!$plans) {
       $loading = true
@@ -33,7 +36,7 @@
     $loading = true
 
     const form = event.target
-    const dto = formDataToJSON<CreateCompanyDto>(form)
+    const dto = formDataToJSON<CreateCompanyDto>(form!)
 
     const api = (await import(/* webpackChunkName: "api" */ '../api')).default
 
@@ -44,7 +47,9 @@
         body: dto
       },
       onSuccess: async (company) => {
-        $user.rights.push({
+        if (!$user!.rights) $user!.rights = []
+
+        $user!.rights!.push({
           company,
           features: 0,
           role: CompanyRole.master
@@ -63,7 +68,7 @@
   }
 </script>
 
-{#if $plans}
+{#if plansLoaded}
   <h1>Add Company page</h1>
   <form on:submit|preventDefault="{addCompany}">
     <div>
@@ -73,7 +78,7 @@
     <div>
       <label for="planId">Plan</label>
       <select name="planId">
-        {#each $plans as { id, name }}
+        {#each allPlans as { id, name }}
           <option value="{id}">{name}</option>
         {/each}
       </select>

@@ -1,7 +1,7 @@
 import type { RoutePath } from '../config'
 
 interface Route {
-  component: (...args: any[]) => Promise<unknown>
+  component: (...args: unknown[]) => Promise<unknown>
   validations?: {
     valid: () => boolean | Promise<boolean>
     ifInvalid?: {

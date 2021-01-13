@@ -42,7 +42,7 @@ export const navigateTo = async (
   currentPath.set(path)
 }
 
-export const navigateToBestMatch = (path: string) => {
+export const navigateToBestMatch = (path: string): void => {
   const base = path.startsWith('/') ? path.slice(1).split('/') : path.split('/')
   const baseLength = path.startsWith('/') ? base.length + 1 : base.length
   if (base.every((uri) => uri === '')) navigateTo('/')
@@ -64,10 +64,7 @@ export const navigateToBestMatch = (path: string) => {
     i++
   }
 
-  const max = Math.max.apply(
-    Math,
-    toCompare.map((i) => i)
-  )
+  const max = Math.max(...toCompare.map((i) => i))
   const maxIndex = toCompare.indexOf(max)
 
   const bestMatch = routePaths[maxIndex]

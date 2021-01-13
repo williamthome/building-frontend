@@ -83,7 +83,7 @@ export const routes: RouteConfig<RoutePath> = {
         }
       },
       {
-        valid: () => !!get(user).activeCompanyId,
+        valid: () => !!get(user)?.activeCompanyId,
         ifInvalid: {
           redirectTo: '/profile'
         }

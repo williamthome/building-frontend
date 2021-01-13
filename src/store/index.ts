@@ -9,13 +9,15 @@ export const loading = writable(false)
 
 // Route
 
-export const currentPath = writable<RoutePath>(undefined)
-export const currentRoute = derived(currentPath, ($currentPath) => routes[$currentPath])
+export const currentPath = writable<RoutePath | undefined>(undefined)
+export const currentRoute = derived(currentPath, ($currentPath) =>
+  $currentPath ? routes[$currentPath] : undefined
+)
 
 // User
 
-export const user = writable<User>(undefined)
+export const user = writable<User | undefined>(undefined)
 
 // PLAN
 
-export const plans = writable<Plan[]>(undefined)
+export const plans = writable<Plan[] | undefined>(undefined)

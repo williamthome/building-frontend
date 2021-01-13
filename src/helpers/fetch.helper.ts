@@ -4,7 +4,8 @@ export const isResponseError = (obj: unknown): obj is { error: string } =>
   typeof obj === 'object' && !!obj && 'error' in obj
 
 export const isTimeoutError = (obj: unknown): obj is DOMException =>
-  obj instanceof DOMException && (obj.name === 'AbortError' || obj.message === 'The user aborted a request')
+  obj instanceof DOMException &&
+  (obj.name === 'AbortError' || obj.message === 'The user aborted a request.')
 
 export const isNetworkError = (obj: unknown): obj is { error: string } =>
   obj instanceof Error && obj.message === 'Network Error'

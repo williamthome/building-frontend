@@ -1,6 +1,5 @@
 <script lang="ts">
   import { user, loading } from '../store'
-  import { routes } from '../config'
   import type { Authentication, Registration, User } from '../models'
   import { formDataToJSON, navigateTo, setCookie, setLocalStorage } from '../helpers'
 
@@ -8,7 +7,7 @@
     $loading = true
 
     const form = event.target
-    const dto = formDataToJSON<Registration>(form)
+    const dto = formDataToJSON<Registration>(form!)
 
     const api = (await import(/* webpackChunkName: "api" */ '../api')).default
 
@@ -18,7 +17,7 @@
         uri: '/user',
         body: dto
       },
-      onSuccess: async ({ user: registerUserResponse, verificationToken }) => {
+      onSuccess: async ({ verificationToken }) => {
         /**
          * !! WARN: THIS IS ONLY FOR DEV PURPOSE !!
          *
