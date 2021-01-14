@@ -88,3 +88,6 @@ export const getUriParams = (routePath: RoutePath, uri: string): Record<string, 
 
   return params
 }
+
+export const getCurrentUriParams = (routePath: RoutePath): Record<string, string> =>
+  getUriParams(routePath, location.pathname)

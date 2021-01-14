@@ -241,7 +241,8 @@ const config: Configuration & WebpackDevServerConfiguration = {
     }),
     new EnvironmentPlugin({
       NODE_ENV: env,
-      API_URL: 'https://api-building.herokuapp.com'
+      // API_URL: 'https://api-building.herokuapp.com'
+      API_URL: 'http://localhost:5051'
     })
   ],
   optimization: {

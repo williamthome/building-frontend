@@ -1,12 +1,13 @@
+import type { Building } from './building.model'
+
 export interface Company {
   id: string
   name: string
   members: Member[]
+  buildings?: Building[]
 }
 
-export interface CreateCompanyDto {
-  name: string
-}
+export type CreateCompanyDto = Pick<Company, 'name'>
 
 export interface Member {
   userId: string

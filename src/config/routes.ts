@@ -10,6 +10,8 @@ export const routePaths = [
   '/profile',
   '/company/:id',
   '/company',
+  '/company/:id/building',
+  '/company/:companyId/building/:id',
   '/404'
 ] as const
 
@@ -110,6 +112,46 @@ export const routes: RouteConfig<RoutePath> = {
       (
         await import(
           /* webpackPrefetch: true */ /* webpackChunkName: "company-add" */ '@/pages/company/AddCompany.svelte'
+        )
+      ).default
+  },
+  '/company/:id/building': {
+    validations: [
+      {
+        valid: () => !!getCookie('accessToken') && !!get(user),
+        ifInvalid: {
+          redirectTo: '/login',
+          do: () => user.set(undefined)
+        }
+      },
+      {
+        valid: () => !!get(user)?.activeCompanyId,
+        ifInvalid: {
+          redirectTo: '/profile'
+        }
+      }
+    ],
+    component: async () =>
+      (
+        await import(
+          /* webpackPrefetch: true */ /* webpackChunkName: "building-add" */ '@/pages/building/AddBuilding.svelte'
+        )
+      ).default
+  },
+  '/company/:companyId/building/:id': {
+    validations: [
+      {
+        valid: () => !!getCookie('accessToken') && !!get(user),
+        ifInvalid: {
+          redirectTo: '/login',
+          do: () => user.set(undefined)
+        }
+      }
+    ],
+    component: async () =>
+      (
+        await import(
+          /* webpackPrefetch: true */ /* webpackChunkName: "building-view" */ '@/pages/building/ViewBuilding.svelte'
         )
       ).default
   },

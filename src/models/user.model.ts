@@ -1,3 +1,4 @@
+import type { Building } from './building.model'
 import type { Company, CompanyRole, UserFeatures } from './company.model'
 
 export interface Authentication {
@@ -20,6 +21,7 @@ export interface User {
   activeCompanyId?: Company['id']
   rights?: UserRights[]
   lastActiveCompany?: Company
+  lastActiveBuilding?: Building
 }
 
 export interface UserRights {
